@@ -4,7 +4,7 @@ import { leadSchema, validateFile, ALLOWED_FILE_EXT } from '../lib/lead-schema';
 import { getUtm, reachGoal } from '../lib/analytics';
 
 type Status = 'idle' | 'sending' | 'success' | 'error';
-type FieldErrors = Partial<Record<'name' | 'contact' | 'message' | 'budget' | 'consent' | 'file', string>>;
+type FieldErrors = Partial<Record<'name' | 'contact' | 'message' | 'consent' | 'file', string>>;
 
 interface SmartCaptcha {
   render(el: HTMLElement, opts: { sitekey: string; invisible: boolean; callback: (token: string) => void }): number;
@@ -55,7 +55,7 @@ function useSmartCaptcha() {
   return { container, getToken, reset };
 }
 
-export default function ContactForm({ budgets }: { budgets: string[] }) {
+export default function ContactForm() {
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<FieldErrors>({});
   const [serverError, setServerError] = useState('');
@@ -71,7 +71,6 @@ export default function ContactForm({ budgets }: { budgets: string[] }) {
       name: data.get('name'),
       contact: data.get('contact'),
       message: data.get('message'),
-      budget: data.get('budget') ?? undefined, // радиокнопки: null, если ничего не выбрано
       consent: data.get('consent') === 'on',
     });
     const fieldErrors: FieldErrors = {};
@@ -171,20 +170,6 @@ export default function ContactForm({ budgets }: { budgets: string[] }) {
         />
         {err('message')}
       </div>
-
-      <fieldset>
-        <legend className={label}>Бюджет</legend>
-        <div className="flex flex-wrap gap-2">
-          {budgets.map((b) => (
-            <label key={b} className="cursor-pointer">
-              <input type="radio" name="budget" value={b} className="peer sr-only" />
-              <span className="block rounded-full border border-line-strong px-4 py-2 text-sm text-muted transition-colors peer-checked:border-accent peer-checked:bg-accent peer-checked:text-bg peer-focus-visible:outline-2 peer-focus-visible:outline-accent hover:text-fg">
-                {b}
-              </span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
 
       <div>
         <label

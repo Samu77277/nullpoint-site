@@ -18,7 +18,6 @@ db.exec(`
     name        TEXT    NOT NULL,
     contact     TEXT    NOT NULL,
     message     TEXT    NOT NULL DEFAULT '',
-    budget      TEXT    NOT NULL DEFAULT '',
     file_path   TEXT,
     file_name   TEXT,
     source_page TEXT,
@@ -36,7 +35,6 @@ export interface LeadRow {
   name: string;
   contact: string;
   message: string;
-  budget: string;
   file_path: string | null;
   file_name: string | null;
   source_page: string | null;
@@ -47,14 +45,13 @@ export interface LeadRow {
 export function insertLead(data: Omit<LeadRow, 'id' | 'created_at'>): number {
   const result = db
     .prepare(
-      `INSERT INTO leads (name, contact, message, budget, file_path, file_name, source_page, utm, ip)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO leads (name, contact, message, file_path, file_name, source_page, utm, ip)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       data.name,
       data.contact,
       data.message,
-      data.budget,
       data.file_path,
       data.file_name,
       data.source_page,

@@ -14,7 +14,6 @@ function formatLead(lead: LeadRow): string {
     `<b>Имя:</b> ${escape(lead.name)}`,
     `<b>Контакт:</b> ${escape(lead.contact)}`,
   ];
-  if (lead.budget) lines.push(`<b>Бюджет:</b> ${escape(lead.budget)}`);
   if (lead.message) lines.push('', escape(lead.message));
   lines.push('');
   if (lead.source_page) lines.push(`Страница: ${escape(lead.source_page)}`);

@@ -17,7 +17,6 @@ export const leadSchema = z.object({
       message: 'Телефон, email или @username в Telegram',
     }),
   message: z.string().trim().max(3000, 'Не больше 3000 символов').optional().default(''),
-  budget: z.string().max(50).optional().default(''),
   consent: z.literal(true, { message: 'Нужно согласие на обработку данных' }),
 });
 

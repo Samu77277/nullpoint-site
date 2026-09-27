@@ -37,7 +37,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     name: form.get('name'),
     contact: form.get('contact'),
     message: form.get('message') ?? undefined,
-    budget: form.get('budget') ?? undefined,
     consent: form.get('consent') === 'on',
   });
   if (!parsed.success) {
