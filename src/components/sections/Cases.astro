@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import CaseCover from '../CaseCover.astro';
+
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const industries = [...new Set(cases.map((c) => c.data.industry))];
+---
+
+<section id="cases" class="section border-t border-line">
+  <div class="container-page">
+    <div class="flex flex-col justify-between gap-8 md:flex-row md:items-end">
+      <div data-reveal>
+        <p class="eyebrow">02 / Кейсы</p>
+        <h2 class="section-title mt-4">Продукты, которые мы запустили</h2>
+      </div>
+
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Фильтр по отраслям" data-reveal style="--i: 1">
+        <button class="filter-btn" data-filter="all" aria-pressed="true">Все</button>
+        {industries.map((i) => (
+          <button class="filter-btn" data-filter={i} aria-pressed="false">{i}</button>
+        ))}
+      </div>
+    </div>
+
+    <ul class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {cases.map((c, i) => (
+        <li data-industry={c.data.industry} class:list={[i === 0 && 'md:col-span-2 lg:col-span-3']} data-reveal style={`--i: ${i % 3}`}>
+          <a href={`/cases/${c.id}`} class="group card flex h-full flex-col overflow-hidden hover:border-line-strong">
+            <CaseCover
+              index={i}
+              variant={c.data.cover}
+              label={`${c.data.industry} · ${c.data.year}`}
+              class={i === 0 ? 'aspect-[16/10] md:aspect-[21/9]' : 'aspect-[16/10]'}
+            />
+            <div class:list={['flex flex-1 flex-col gap-6 p-6 md:p-8', i === 0 && 'lg:flex-row lg:items-end lg:justify-between']}>
+              <div>
+                <h3 class="font-display text-xl font-medium tracking-tight md:text-2xl">{c.data.title}</h3>
+                <p class="mt-2 max-w-xl text-muted">{c.data.description}</p>
+              </div>
+              <div class:list={['mt-auto shrink-0', i === 0 && 'lg:text-right']}>
+                <p class="font-display text-2xl font-semibold text-accent md:text-3xl">{c.data.results[0].value}</p>
+                <p class="text-sm text-muted">{c.data.results[0].label}</p>
+              </div>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .filter-btn {
+    border-radius: 9999px;
+    border: 1px solid var(--color-line-strong);
+    padding: 0.5rem 1.125rem;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    transition: all 0.2s;
+  }
+  .filter-btn:hover {
+    color: var(--color-fg);
+    border-color: var(--color-fg);
+  }
+  .filter-btn[aria-pressed='true'] {
+    background: var(--color-fg);
+    border-color: var(--color-fg);
+    color: var(--color-bg);
+  }
+</style>
+
+<script>
+  import { reachGoal } from '../../lib/analytics';
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-industry]');
+
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      items.forEach((item) => (item.hidden = filter !== 'all' && item.dataset.industry !== filter));
+    }),
+  );
+
+  // Цель «доскроллил до кейсов» — один раз
+  const section = document.getElementById('cases')!;
+  const observer = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    reachGoal('scroll_to_cases');
+    observer.disconnect();
+  });
+  observer.observe(section);
+</script>

@@ -1,0 +1,35 @@
+---
+import { services } from '../../data/site';
+---
+
+<section id="services" class="section">
+  <div class="container-page">
+    <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <div data-reveal>
+        <p class="eyebrow">01 / Услуги</p>
+        <h2 class="section-title mt-4 max-w-2xl">ИИ, который решает задачи бизнеса, а не просто отвечает</h2>
+      </div>
+      <p class="max-w-sm text-muted" data-reveal style="--i: 1">
+        От аудита и прототипа до агента в продакшене с интеграциями. И вся классическая разработка вокруг него.
+      </p>
+    </div>
+
+    <ul class="mt-14 grid gap-px overflow-hidden rounded-3xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      {services.map((s, i) => (
+        <li class="group relative bg-bg p-8 transition-colors duration-300 hover:bg-surface md:p-10" data-reveal style={`--i: ${i % 3}`}>
+          <div class="flex items-start justify-between">
+            <span class="font-mono text-sm text-muted transition-colors group-hover:text-accent">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span
+              class="grid size-9 place-items-center rounded-full border border-line-strong text-muted transition-all duration-300 group-hover:rotate-[-45deg] group-hover:border-accent group-hover:bg-accent group-hover:text-bg"
+              aria-hidden="true"
+            >→</span>
+          </div>
+          <h3 class="mt-8 font-display md:mt-14 text-xl font-medium tracking-tight">{s.title}</h3>
+          <p class="mt-3 text-muted">{s.text}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

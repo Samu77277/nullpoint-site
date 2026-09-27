@@ -1,0 +1,27 @@
+---
+import { faq } from '../../data/site';
+---
+
+<section id="faq" class="section border-t border-line">
+  <div class="container-page grid gap-12 lg:grid-cols-12">
+    <div class="lg:col-span-4" data-reveal>
+      <p class="eyebrow">05 / FAQ</p>
+      <h2 class="section-title mt-4">Частые вопросы</h2>
+    </div>
+
+    <div class="lg:col-span-8">
+      {faq.map((item, i) => (
+        <details class="group border-t border-line last:border-b" data-reveal style={`--i: ${i}`}>
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-lg font-medium tracking-tight transition-colors hover:text-accent md:text-xl [&::-webkit-details-marker]:hidden">
+            {item.q}
+            <span
+              class="grid size-9 shrink-0 place-items-center rounded-full border border-line-strong text-lg transition-all duration-300 group-open:rotate-45 group-open:border-accent group-open:bg-accent group-open:text-bg"
+              aria-hidden="true"
+            >+</span>
+          </summary>
+          <p class="max-w-2xl pb-6 text-muted">{item.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

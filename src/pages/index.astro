@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/sections/Hero.astro';
+import TechMarquee from '../components/sections/TechMarquee.astro';
+import Services from '../components/sections/Services.astro';
+import Cases from '../components/sections/Cases.astro';
+import Process from '../components/sections/Process.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import Faq from '../components/sections/Faq.astro';
+import Contact from '../components/sections/Contact.astro';
+import { company, hero } from '../data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: company.name,
+  legalName: company.legalName,
+  url: Astro.site?.href,
+  email: company.email,
+  telephone: company.phone,
+  address: { '@type': 'PostalAddress', streetAddress: company.address, addressCountry: 'RU' },
+  sameAs: [company.telegram],
+};
+---
+
+<Layout title={company.name} description={hero.subtitle} jsonLd={jsonLd}>
+  <Hero />
+  <TechMarquee />
+  <Services />
+  <Cases />
+  <Process />
+  <Testimonials />
+  <Faq />
+  <Contact />
+</Layout>

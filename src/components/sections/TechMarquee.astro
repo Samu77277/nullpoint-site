@@ -1,0 +1,22 @@
+---
+// Бегущая строка технологий
+import { tech } from '../../data/site';
+---
+
+<section class="overflow-hidden border-y border-line bg-surface py-8" aria-label="Технологии">
+  <ul class="sr-only">
+    {tech.map((t) => <li>{t}</li>)}
+  </ul>
+  <div class="flex w-max [animation:marquee_40s_linear_infinite] hover:[animation-play-state:paused]" aria-hidden="true">
+    {[0, 1].map(() => (
+      <div class="flex shrink-0 items-center">
+        {tech.map((t) => (
+          <span class="flex items-center gap-8 px-4 font-display text-2xl font-medium whitespace-nowrap text-muted md:text-4xl">
+            {t}
+            <span class="text-base text-accent">✦</span>
+          </span>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>

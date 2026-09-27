@@ -1,0 +1,30 @@
+<div
+  id="cookie-banner"
+  hidden
+  class="fixed inset-x-4 bottom-4 z-40 mx-auto max-w-lg rounded-2xl border border-line-strong bg-surface-2/95 p-5 shadow-2xl backdrop-blur sm:bottom-6"
+>
+  <p class="text-sm text-muted">
+    Мы используем cookie и Яндекс Метрику для анализа посещаемости.
+    Подробнее — в <a href="/privacy" class="text-fg underline underline-offset-2">политике обработки данных</a>.
+  </p>
+  <div class="mt-4 flex gap-2">
+    <button data-consent="accepted" class="btn-primary !px-5 !py-2 !text-sm">Принять</button>
+    <button data-consent="declined" class="btn-ghost !px-5 !py-2 !text-sm">Отклонить</button>
+  </div>
+</div>
+
+<script>
+  import { getConsent, loadMetrika, setConsent } from '../lib/analytics';
+
+  const banner = document.getElementById('cookie-banner')!;
+  if (!getConsent()) banner.hidden = false;
+
+  banner.querySelectorAll<HTMLButtonElement>('[data-consent]').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const value = btn.dataset.consent as 'accepted' | 'declined';
+      setConsent(value);
+      if (value === 'accepted') loadMetrika();
+      banner.hidden = true;
+    }),
+  );
+</script>

@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Страница не найдена" description="Такой страницы нет">
+  <section class="relative grid min-h-[80vh] place-items-center overflow-hidden pt-24">
+    <div class="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,black,transparent)]" aria-hidden="true"></div>
+    <div class="container-page relative text-center">
+      <p class="font-display text-[clamp(6rem,20vw,14rem)] leading-none font-semibold tracking-tighter text-accent">404</p>
+      <h1 class="mt-4 font-display text-2xl font-medium">Страница не найдена</h1>
+      <p class="mt-2 font-mono text-sm text-muted">error: route not found</p>
+      <a href="/" class="btn-primary mt-10">На главную</a>
+    </div>
+  </section>
+</Layout>

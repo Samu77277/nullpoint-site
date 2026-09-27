@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { company } from '../data/site';
+---
+
+<Layout title="Политика обработки персональных данных" description={`Политика ${company.legalName} в отношении обработки персональных данных`}>
+  <div class="section pt-32 md:pt-40">
+    <div class="container-page max-w-3xl space-y-4 text-muted">
+      <h1 class="font-display text-3xl font-semibold tracking-tight text-fg md:text-4xl">Политика обработки персональных данных</h1>
+
+      <p class="rounded-xl border border-amber-400/30 bg-amber-400/10 p-4 text-sm text-amber-200">
+        TODO: заглушка. Текст политики должен подготовить юрист с учётом 152-ФЗ.
+      </p>
+
+      <p>Оператор: {company.legalName}, ИНН {company.inn}, ОГРН {company.ogrn}, адрес: {company.address}.</p>
+
+      <h2 class="pt-6 font-display text-xl font-medium text-fg">Какие данные собираем</h2>
+      <p>Имя, контактные данные (телефон, email, имя пользователя в Telegram), описание проекта и приложенные файлы, а также технические данные: IP-адрес, cookie, данные Яндекс Метрики.</p>
+
+      <h2 class="pt-6 font-display text-xl font-medium text-fg">Цели обработки</h2>
+      <p>Обработка заявок, связь с клиентом, подготовка коммерческого предложения, анализ посещаемости сайта.</p>
+
+      <h2 class="pt-6 font-display text-xl font-medium text-fg">Хранение и передача</h2>
+      <p>Данные хранятся на серверах, расположенных на территории Российской Федерации. Для оперативной обработки заявки её содержимое передаётся в мессенджер Telegram (трансграничная передача).</p>
+
+      <h2 class="pt-6 font-display text-xl font-medium text-fg">Отзыв согласия</h2>
+      <p>Чтобы отозвать согласие или удалить данные, напишите на <a href={`mailto:${company.email}`} class="text-fg underline">{company.email}</a>.</p>
+    </div>
+  </div>
+</Layout>

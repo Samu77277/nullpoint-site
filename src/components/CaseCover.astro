@@ -1,0 +1,93 @@
+---
+// Абстрактная обложка кейса, пока нет реальных скриншотов.
+// TODO: заменить на изображения проектов (astro:assets <Image />).
+interface Props {
+  index: number;
+  variant: 'dashboard' | 'chart' | 'profile' | 'chat';
+  label: string;
+  class?: string;
+}
+
+const palettes = [
+  { glow: 'rgb(198 244 50 / 0.35)', tint: 'rgb(198 244 50)' },
+  { glow: 'rgb(91 140 255 / 0.4)', tint: 'rgb(91 140 255)' },
+  { glow: 'rgb(167 139 250 / 0.4)', tint: 'rgb(167 139 250)' },
+  { glow: 'rgb(45 212 191 / 0.35)', tint: 'rgb(45 212 191)' },
+];
+
+const { index, variant, label, class: className } = Astro.props;
+const p = palettes[index % palettes.length];
+---
+
+<div
+  class:list={['relative overflow-hidden bg-surface-2', className]}
+  style={`--glow: ${p.glow}; --tint: ${p.tint}`}
+  aria-hidden="true"
+>
+  <div class="bg-grid absolute inset-0 opacity-60"></div>
+  <div class="glow absolute inset-0 transition-transform duration-700 group-hover:scale-110"></div>
+
+  <!-- Макет интерфейса -->
+  <div class="absolute inset-x-[12%] top-[18%] bottom-0 rounded-t-xl border border-white/10 bg-bg/80 p-4 backdrop-blur transition-transform duration-500 group-hover:-translate-y-2">
+    <div class="flex gap-1.5">
+      <span class="size-2 rounded-full bg-white/15"></span>
+      <span class="size-2 rounded-full bg-white/15"></span>
+      <span class="size-2 rounded-full bg-white/15"></span>
+    </div>
+    {variant === 'dashboard' && (
+      <div class="mt-4 grid grid-cols-3 gap-2">
+        <div class="col-span-2 h-16 rounded-md bg-[var(--tint)]/80"></div>
+        <div class="h-16 rounded-md bg-white/10"></div>
+        <div class="h-10 rounded-md bg-white/10"></div>
+        <div class="h-10 rounded-md bg-white/10"></div>
+        <div class="h-10 rounded-md bg-white/5"></div>
+      </div>
+    )}
+    {variant === 'chart' && (
+      <div class="mt-4 flex h-24 items-end gap-2">
+        {[40, 65, 50, 80, 60, 95, 75].map((h) => (
+          <div class="flex-1 rounded-t bg-[var(--tint)]" style={`height: ${h}%; opacity: ${0.35 + h / 160}`}></div>
+        ))}
+      </div>
+    )}
+    {variant === 'profile' && (
+      <div class="mt-4 space-y-2">
+        <div class="h-3 w-2/3 rounded bg-white/20"></div>
+        <div class="h-3 w-1/2 rounded bg-white/10"></div>
+        <div class="mt-4 flex gap-2">
+          <div class="size-12 rounded-full bg-[var(--tint)]/80"></div>
+          <div class="flex-1 space-y-2 pt-1">
+            <div class="h-2.5 rounded bg-white/15"></div>
+            <div class="h-2.5 w-3/4 rounded bg-white/10"></div>
+          </div>
+        </div>
+      </div>
+    )}
+    {variant === 'chat' && (
+      <div class="mt-4 flex flex-col gap-2">
+        <div class="h-6 w-1/2 self-end rounded-lg rounded-br-sm bg-white/15"></div>
+        <div class="flex items-start gap-2">
+          <span class="grid size-6 shrink-0 place-items-center rounded-full bg-[var(--tint)] text-[10px] font-bold text-bg">AI</span>
+          <div class="flex-1 space-y-1.5 rounded-lg rounded-tl-sm bg-[var(--tint)]/15 p-2">
+            <div class="h-2 w-5/6 rounded bg-[var(--tint)]/70"></div>
+            <div class="h-2 w-2/3 rounded bg-[var(--tint)]/40"></div>
+          </div>
+        </div>
+        <div class="ml-8 flex gap-1.5">
+          <span class="rounded-full border border-[var(--tint)]/40 px-2 py-0.5 font-mono text-[10px] text-[var(--tint)]">✓ card.block</span>
+          <span class="rounded-full border border-white/10 px-2 py-0.5 font-mono text-[10px] text-muted">crm.update</span>
+        </div>
+      </div>
+    )}
+  </div>
+
+  <span class="absolute top-4 left-4 rounded-full border border-white/10 bg-bg/60 px-3 py-1 font-mono text-xs text-fg backdrop-blur">
+    {label}
+  </span>
+</div>
+
+<style>
+  .glow {
+    background: radial-gradient(60% 60% at 70% 20%, var(--glow), transparent 70%);
+  }
+</style>

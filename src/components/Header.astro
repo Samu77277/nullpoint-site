@@ -1,0 +1,132 @@
+---
+import Logo from './Logo.astro';
+import { nav, hero } from '../data/site';
+---
+
+<header id="site-header" class="fixed inset-x-0 top-0 z-30 border-b border-transparent transition-colors duration-300">
+  <div class="container-page flex h-18 items-center justify-between gap-6">
+    <Logo />
+
+    <nav class="hidden md:block" aria-label="Основная навигация">
+      <ul class="flex gap-8">
+        {nav.map((item) => (
+          <li><a href={`/${item.href}`} data-nav={item.href.slice(1)} class="nav-link">{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href="/#contact" data-goal="cta_click" class="btn-primary hidden !px-5 !py-2.5 !text-sm sm:inline-flex">
+        {hero.cta}
+      </a>
+      <button
+        id="burger"
+        class="grid size-10 place-items-center rounded-full border border-line-strong md:hidden"
+        aria-label="Меню"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path class="burger-top origin-center transition-transform" d="M2 6h14" />
+          <path class="burger-bot origin-center transition-transform" d="M2 12h14" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" hidden class="h-[calc(100dvh-4.5rem)] border-t border-line bg-bg md:hidden" aria-label="Мобильная навигация">
+    <ul class="container-page flex flex-col pt-6">
+      {nav.map((item, i) => (
+        <li class="border-b border-line">
+          <a href={`/${item.href}`} class="flex items-baseline gap-4 py-5 font-display text-2xl">
+            <span class="font-mono text-xs text-muted">0{i + 1}</span>{item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <div class="container-page mt-8">
+      <a href="/#contact" data-goal="cta_click" class="btn-primary w-full">{hero.cta}</a>
+    </div>
+  </nav>
+</header>
+
+<!-- Плавающая CTA на мобильных -->
+<a
+  href="/#contact"
+  data-goal="cta_click"
+  id="floating-cta"
+  class="btn-primary fixed right-4 bottom-4 left-4 z-20 shadow-2xl transition-opacity duration-300 sm:hidden"
+>
+  {hero.cta}
+</a>
+
+<style>
+  #site-header.is-scrolled,
+  #site-header.is-open {
+    background: rgb(9 9 11 / 0.8);
+    backdrop-filter: blur(16px);
+    border-color: var(--color-line);
+  }
+  #site-header.is-open .burger-top {
+    transform: translateY(3px) rotate(45deg);
+  }
+  #site-header.is-open .burger-bot {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const burger = document.getElementById('burger')!;
+  const menu = document.getElementById('mobile-menu')!;
+
+  const toggle = (open: boolean) => {
+    menu.hidden = !open;
+    header.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+  burger.addEventListener('click', () => toggle(menu.hasAttribute('hidden')));
+  menu.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) toggle(false);
+  });
+
+  // Фон шапки появляется после начала прокрутки
+  const onScroll = () => header.classList.toggle('is-scrolled', scrollY > 16);
+  onScroll();
+  addEventListener('scroll', onScroll, { passive: true });
+
+  // Подсветка активного пункта меню при прокрутке
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-nav]');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        links.forEach((l) => l.classList.toggle('is-active', l.dataset.nav === entry.target.id));
+      }
+    },
+    { rootMargin: '-40% 0px -55% 0px' },
+  );
+  links.forEach((l) => {
+    const section = document.getElementById(l.dataset.nav!);
+    if (section) observer.observe(section);
+  });
+
+  // Плавающая CTA: скрыта на первом экране и когда форма в зоне видимости
+  const cta = document.getElementById('floating-cta')!;
+  const contact = document.getElementById('contact');
+  let contactVisible = false;
+  const updateCta = () => {
+    const hide = scrollY < innerHeight * 0.6 || contactVisible;
+    cta.style.opacity = hide ? '0' : '1';
+    cta.style.pointerEvents = hide ? 'none' : '';
+  };
+  updateCta();
+  addEventListener('scroll', updateCta, { passive: true });
+  if (contact) {
+    new IntersectionObserver(([e]) => {
+      contactVisible = e.isIntersecting;
+      updateCta();
+    }).observe(contact);
+  }
+</script>

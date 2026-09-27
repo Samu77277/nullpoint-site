@@ -1,0 +1,51 @@
+---
+import Logo from './Logo.astro';
+import { company, nav } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line pt-16 pb-24 text-sm sm:pb-10">
+  <div class="container-page">
+    <div class="grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <Logo />
+        <p class="mt-4 max-w-xs text-muted">Проектируем, разрабатываем и развиваем цифровые продукты.</p>
+      </div>
+
+      <nav class="md:col-span-2" aria-label="Навигация в подвале">
+        <p class="eyebrow !text-muted">Навигация</p>
+        <ul class="mt-4 space-y-2">
+          {nav.map((item) => <li><a href={`/${item.href}`} class="nav-link">{item.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div class="md:col-span-2">
+        <p class="eyebrow !text-muted">Контакты</p>
+        <ul class="mt-4 space-y-2">
+          <li><a href={`mailto:${company.email}`} class="nav-link">{company.email}</a></li>
+          <li><a href={`tel:${company.phone.replace(/[^\d+]/g, '')}`} class="nav-link">{company.phone}</a></li>
+          <li>
+            <a href={company.telegram} data-goal="telegram_click" target="_blank" rel="noopener" class="nav-link">
+              Telegram {company.telegramHandle}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="text-muted md:col-span-3">
+        <p class="eyebrow !text-muted">Реквизиты</p>
+        <div class="mt-4 space-y-1">
+          <p>{company.legalName}</p>
+          <p>ИНН {company.inn}</p>
+          <p>ОГРН {company.ogrn}</p>
+          <p>{company.address}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16 flex flex-col justify-between gap-4 border-t border-line pt-8 text-muted sm:flex-row">
+      <p>© {year} {company.name}</p>
+      <a href="/privacy" class="nav-link">Политика обработки персональных данных</a>
+    </div>
+  </div>
+</footer>

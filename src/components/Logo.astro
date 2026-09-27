@@ -1,0 +1,14 @@
+---
+import { company } from '../data/site';
+---
+
+<a href="/" class="group inline-flex items-center gap-2.5" aria-label={`${company.name} — на главную`}>
+  <span class="relative grid size-7 place-items-center rounded-md bg-accent text-bg transition-transform duration-300 group-hover:rotate-90">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+      <rect x="0" y="0" width="6" height="6" rx="1" />
+      <rect x="8" y="8" width="6" height="6" rx="1" />
+      <rect x="8" y="0" width="6" height="6" rx="3" />
+    </svg>
+  </span>
+  <span class="font-display text-lg font-semibold tracking-tight">{company.name}</span>
+</a>

@@ -1,0 +1,41 @@
+---
+import { clients, testimonials } from '../../data/site';
+---
+
+<section class="section">
+  <div class="container-page">
+    <div data-reveal>
+      <p class="eyebrow">04 / Клиенты</p>
+      <h2 class="section-title mt-4 max-w-2xl">Нам доверяют стартапы и крупный бизнес</h2>
+    </div>
+
+    <!-- TODO: логотипы клиентов (SVG, одноцветные) -->
+    <ul class="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3 lg:grid-cols-6">
+      {clients.map((c, i) => (
+        <li class="grid h-24 place-items-center bg-bg font-display text-sm text-muted transition-colors hover:text-fg" data-reveal style={`--i: ${i}`}>
+          {c}
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      {testimonials.map((t, i) => (
+        <figure class="card flex flex-col justify-between p-8 md:p-10" data-reveal style={`--i: ${i}`}>
+          <div>
+            <span class="font-display text-5xl leading-none text-accent" aria-hidden="true">“</span>
+            <blockquote class="mt-2 text-lg leading-relaxed md:text-xl">{t.text}</blockquote>
+          </div>
+          <figcaption class="mt-8 flex items-center gap-3">
+            <span class="grid size-10 place-items-center rounded-full bg-surface-2 font-display text-sm text-accent" aria-hidden="true">
+              {t.author.split(' ').map((w) => w[0]).join('')}
+            </span>
+            <span>
+              <span class="block font-medium">{t.author}</span>
+              <span class="block text-sm text-muted">{t.role}</span>
+            </span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

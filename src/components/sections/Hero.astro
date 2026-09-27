@@ -1,0 +1,115 @@
+---
+import { hero, stats } from '../../data/site';
+
+// Лог работы AI-агента в «терминале»
+const trace = [
+  { step: 'intent: card_limit_change', time: '0.2s' },
+  { step: 'rag: 3 docs retrieved', time: '0.6s' },
+  { step: 'tool: bank_api.set_limit', time: '1.1s' },
+  { step: 'tool: crm.log_ticket', time: '1.3s' },
+];
+---
+
+<section class="relative overflow-hidden pt-32 pb-16 md:pt-44 md:pb-24">
+  <!-- Фон: сетка с затуханием и свечение -->
+  <div class="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute -top-40 left-1/2 h-[480px] w-[720px] -translate-x-1/2 rounded-full bg-accent/15 blur-[120px]" aria-hidden="true"></div>
+
+  <div class="container-page relative">
+    <p class="eyebrow flex items-center gap-2" data-reveal>
+      <span class="size-1.5 rounded-full bg-accent shadow-[0_0_12px_var(--color-accent)]"></span>
+      {hero.eyebrow}
+    </p>
+
+    <h1
+      class="mt-6 max-w-5xl font-display text-[clamp(1.875rem,0.9rem+4.8vw,5.25rem)] hyphens-auto leading-[1.02] font-semibold tracking-[-0.035em] text-balance"
+      data-reveal
+      style="--i: 1"
+    >
+      {hero.title} <span class="text-accent">{hero.titleAccent}</span>
+    </h1>
+
+    <div class="mt-10 grid items-end gap-12 lg:mt-14 lg:grid-cols-12">
+      <div class="lg:col-span-6" data-reveal style="--i: 2">
+        <p class="max-w-xl text-lg text-muted md:text-xl">{hero.subtitle}</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#contact" data-goal="cta_click" class="btn-primary">
+            {hero.cta}
+            <span aria-hidden="true">→</span>
+          </a>
+          <a href="#cases" class="btn-ghost">Смотреть кейсы</a>
+        </div>
+      </div>
+
+      <!-- Терминал: AI-агент решает обращение клиента -->
+      <div class="lg:col-span-5 lg:col-start-8" data-reveal style="--i: 3" aria-hidden="true">
+        <div class="card overflow-hidden font-mono text-[13px] shadow-[0_24px_80px_-24px_rgb(198_244_50/0.25)] [animation:float_6s_ease-in-out_infinite]">
+          <div class="flex items-center gap-1.5 border-b border-line px-4 py-3">
+            <span class="size-2.5 rounded-full bg-white/10"></span>
+            <span class="size-2.5 rounded-full bg-white/10"></span>
+            <span class="size-2.5 rounded-full bg-white/10"></span>
+            <span class="ml-3 text-xs text-muted">support-agent · live</span>
+            <span class="ml-auto size-2 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent)] [animation:blink_2s_ease-in-out_infinite]"></span>
+          </div>
+          <div class="space-y-2 p-5 leading-relaxed">
+            <p class="line text-muted" style="--d: 0">
+              <span class="text-fg">user:</span> «Поднимите лимит по карте до 500 тыс.»
+            </p>
+            {trace.map((t, i) => (
+              <p class="line flex justify-between gap-4" style={`--d: ${i + 1}`}>
+                <span class="truncate"><span class="text-accent">✓</span> {t.step}</span>
+                <span class="shrink-0 text-muted">{t.time}</span>
+              </p>
+            ))}
+            <p class="line flex items-center justify-between gap-4" style={`--d: ${trace.length + 1}`}>
+              <span><span class="text-accent">▸</span> confidence</span>
+              <span class="flex flex-1 items-center justify-end gap-3">
+                <span class="relative h-1.5 w-full max-w-32 overflow-hidden rounded-full bg-white/10">
+                  <span class="progress absolute inset-y-0 left-0 rounded-full bg-accent"></span>
+                </span>
+                <span class="text-muted">0.97</span>
+              </span>
+            </p>
+            <p class="line pt-2 text-muted" style={`--d: ${trace.length + 2}`}>
+              <span class="text-accent">agent:</span> готово, лимит обновлён<span class="ml-1 inline-block h-4 w-2 translate-y-0.5 bg-accent [animation:blink_1s_steps(1)_infinite]"></span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Цифры -->
+    <dl class="mt-20 grid grid-cols-2 gap-y-8 border-t border-line pt-8 md:mt-28 md:grid-cols-4">
+      {stats.map((s, i) => (
+        <div class="flex flex-col" data-reveal style={`--i: ${i}`}>
+          <dt class="order-2 mt-1 text-sm text-muted">{s.label}</dt>
+          <dd class="font-display text-3xl font-semibold tracking-tight md:text-4xl">{s.value}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<style>
+  /* Строки лога появляются по очереди, как будто агент работает в реальном времени */
+  .line {
+    animation: line-in 0.4s ease-out both;
+    animation-delay: calc(0.8s + var(--d) * 0.45s);
+  }
+  @keyframes line-in {
+    from {
+      opacity: 0;
+      transform: translateX(-6px);
+    }
+  }
+  .progress {
+    width: 97%;
+    animation: grow 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 3.3s;
+  }
+  @keyframes grow {
+    from {
+      width: 0;
+    }
+  }
+</style>

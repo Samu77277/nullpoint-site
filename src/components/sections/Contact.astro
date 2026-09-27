@@ -1,0 +1,51 @@
+---
+import ContactForm from '../ContactForm';
+import { budgets, company } from '../../data/site';
+---
+
+<section id="contact" class="section pt-0">
+  <div class="container-page">
+    <div class="relative overflow-hidden rounded-[2rem] border border-line bg-surface p-6 md:p-12 lg:p-16">
+      <div class="pointer-events-none absolute -right-40 -bottom-40 size-[520px] rounded-full bg-accent/10 blur-[120px]" aria-hidden="true"></div>
+
+      <div class="relative grid gap-12 lg:grid-cols-12">
+        <div class="min-w-0 lg:col-span-5" data-reveal>
+          <p class="eyebrow">06 / Контакты</p>
+          <h2 class="section-title mt-4">Обсудим ваш проект</h2>
+          <p class="mt-6 max-w-md text-lg text-muted">
+            Расскажите о задаче — ответим в течение рабочего дня и предложим формат работы и оценку.
+          </p>
+
+          <ul class="mt-10 space-y-4">
+            <li>
+              <a href={company.telegram} data-goal="telegram_click" target="_blank" rel="noopener" class="group flex items-center gap-4">
+                <span class="grid size-12 place-items-center rounded-full border border-line-strong transition-colors group-hover:border-accent group-hover:bg-accent group-hover:text-bg" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.6c-.2 1.1-.9 1.4-1.8.9l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.2-8.3c.4-.4-.1-.6-.6-.2L6.1 13.3 1.2 11.8c-1.1-.3-1.1-1.1.2-1.6L20.5 2.8c.9-.3 1.7.2 1.4 1.5Z"/></svg>
+                </span>
+                <span>
+                  <span class="block text-sm text-muted">Telegram</span>
+                  <span class="block font-medium">{company.telegramHandle}</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${company.email}`} class="group flex items-center gap-4">
+                <span class="grid size-12 place-items-center rounded-full border border-line-strong transition-colors group-hover:border-accent group-hover:bg-accent group-hover:text-bg" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                </span>
+                <span>
+                  <span class="block text-sm text-muted">Email</span>
+                  <span class="block font-medium">{company.email}</span>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="min-w-0 lg:col-span-7" data-reveal style="--i: 1">
+          <ContactForm client:visible budgets={budgets} />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
